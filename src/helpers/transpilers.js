@@ -67,3 +67,15 @@ export function createBabelConfig(opts) {
 export function createBubleConifg(opts) {
     return buble();
 }
+
+export function getTranspilers(mode, opts) {
+    switch (mode) {
+        case 'buble':
+            return createBubleConifg(opts);
+        case 'babel':
+            return createBabelConfig(opts);
+
+        default:
+            return {}
+    }
+}

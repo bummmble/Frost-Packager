@@ -1,11 +1,13 @@
 import meow from 'meow';
 import chalk from 'chalk';
+import { eachOfSeries } from 'async';
 import { resolve } from 'path';
 import { get as getRoot } from 'app-root-dir';
 
 import generateTargets from './helpers/targets';
 import { generateOutputMatrix, ammendOutputMatrix } from './helpers/outputMatrix';
 import { findBest } from './helpers/utils';
+import { getTranspilers } from './helpers/transpilers';
 
 const Root = getRoot();
 const pkg = require(resolve(Root, 'package.json'));
@@ -103,15 +105,52 @@ const name = pkg.name;
 const targets = generateTargets(inputNode, inputWeb, inputBinary);
 
 function generateBuilds() {
-    const inputs = Object.keys(targets)
-        .map(target => {
-            const input = findBest(targets[target]);
-            if (!quiet) {
-                console.log(`Using input ${chalk.blue(input)} for target ${chalk.blue(target)}`);
+    try {
+        eachOfSeries(targets, (env, targetId, targetCb) => {
+            const input = findBest(env);
+            if (input) {
+                eachOfSeries(formats, (format, formatId, formatCb) => {
+                    const transpilers = getTraspilers(command.flags.transpiler, {
+                        minified: command.flags.minified,
+                        presets: [],
+                        plugins: [],
+                        targetUnstable
+                    });
+                    eachOfSeries(transpilers, (transpilers, transpilerId, transpilerCb) => {
+                        const outputFile = outputMatrix[`${targetId}-${transpilerCb}-${format}`];
+                        if (outputFile) {
+                            return createBundle({
+                                input,
+                                targetId,
+                                transpilerId,
+                                current,
+                                format,
+                                outputFile,
+                                transpilerCb
+                            });
+                        } else {
+                            return transpilerCb(null);
+                        }
+                    }, formatCb)
+                }, targetCb)
+            } else {
+                targetCb(null);
             }
-            return input;
         })
-        .filter(item => typeof item !== 'undefined')
+    } catch (err) {
+        console.error(err);
+        process.exit(1);
+    }
 }
 
-generateBuilds();
+export function createBundle({
+    input,
+    targetId,
+    transpilerId,
+    current,
+    format,
+    outputFile,
+    transpilerCb
+}) {
+
+}
