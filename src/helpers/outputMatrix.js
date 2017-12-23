@@ -11,5 +11,15 @@ export function generateOutputMatrix(pkg, binaryOutput) {
 
         'binary-binary-commonjs': binaryOutput || null
     };
+}
 
+export function ammendOutputMatrix(matrix, output) {
+    matrix['node-classic-commonjs'] = `${output}/node.classic.commonjs.js`;
+    matrix['node-classic-esmodule'] = `${output}/node.classic.esmodule.js`;
+    matrix['node-es2015-commonjs'] = `${output}/node.es2015.commonjs.js`;
+    matrix['node-es2015-esmodule'] = `${output}/node.es2015.esmodule.js`;
+
+    matrix['node-modern-commonjs'] = `${output}/node.modern.commonjs.js`;
+    matrix['node-modern-esmodule'] = `${output}/node.modern.esmodule.js`;
+    return matrix;
 }

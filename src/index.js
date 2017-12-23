@@ -1,9 +1,11 @@
 import meow from 'meow';
 import chalk from 'chalk';
+import { resolve } from 'path';
 import { get as getRoot } from 'app-root-dir';
 
 import generateTargets from './helpers/targets';
-import { generateOutputMatrix, ammendOutputMatrix } fom './helpers/outputMatrix';
+import { generateOutputMatrix, ammendOutputMatrix } from './helpers/outputMatrix';
+import { findBest } from './helpers/utils';
 
 const Root = getRoot();
 const pkg = require(resolve(Root, 'package.json'));
@@ -99,3 +101,17 @@ const rollupFormat = {
 const formats = ['esmodule', 'commonjs'];
 const name = pkg.name;
 const targets = generateTargets(inputNode, inputWeb, inputBinary);
+
+function generateBuilds() {
+    const inputs = Object.keys(targets)
+        .map(target => {
+            const input = findBest(targets[target]);
+            if (!quiet) {
+                console.log(`Using input ${chalk.blue(input)} for target ${chalk.blue(target)}`);
+            }
+            return input;
+        })
+        .filter(item => typeof item !== 'undefined')
+}
+
+generateBuilds();

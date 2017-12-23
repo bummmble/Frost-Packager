@@ -35,7 +35,7 @@ function generateWeb(web) {
         'src/browser/index.js',
         'src/browser/main.js',
         'src/browser/web.js',
-        'src/browser/client.js'
+        'src/browser/client.js',
         'src/client/index.js',
         'src/client/main.js',
         'src/client/client.js',
