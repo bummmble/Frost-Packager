@@ -203,7 +203,9 @@ export function createBundle({
         ]
     })
     .then(({ write }) => write({
-        banner,
+        banner: transpilerId === 'binary'
+            ? `#!/usr/bin/env node\n\n${banner}`
+            : banner,
         file: outputFile,
         format: rollupFormat[format]
         name,
