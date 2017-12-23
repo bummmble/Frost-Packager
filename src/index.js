@@ -5,6 +5,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import jsonPlugin from 'rollup-plugin-json';
 import yamlPlugin from 'rollup-plugin-yaml';
 import replacePlugin from 'rollup-plugin-replace';
+import exec from 'rollup-plugin-exec';
 
 import { resolve, relative, isAbsolute } from 'path';
 import { eachOfSeries } from 'async';
@@ -116,7 +117,7 @@ const name = pkg.name || camelize(pkg.name);
 const banner = getBanner(pkg);
 const targets = generateTargets(inputNode, inputWeb, inputBinary);
 
-function generateBuilds() {
+export function generateBuilds() {
     try {
         eachOfSeries(targets, (env, targetId, targetCb) => {
             const input = findBest(env);
@@ -200,6 +201,8 @@ export function createBundle({
             }),
             yamlPlugin(),
             jsonPlugin(),
+            current,
+            transpilerId === 'binary' ? exec() : null
         ]
     })
     .then(({ write }) => write({
