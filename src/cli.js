@@ -9,7 +9,6 @@ import exec from 'rollup-plugin-exec';
 
 import { resolve, relative, isAbsolute } from 'path';
 import { eachOfSeries } from 'async';
-import { resolve } from 'path';
 import { rollup } from 'rollup';
 import { get as getRoot } from 'app-root-dir';
 
@@ -210,7 +209,7 @@ export function createBundle({
             ? `#!/usr/bin/env node\n\n${banner}`
             : banner,
         file: outputFile,
-        format: rollupFormat[format]
+        format: rollupFormat[format],
         name,
         sourcemap: command.flags.sourcemap,
     }))
