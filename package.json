@@ -1,6 +1,20 @@
 {
   "name": "frost-packager",
   "version": "0.1.0",
+  "author": {
+    "name": "Forrest Collins",
+    "email": "Forrdev@gmail.com",
+    "url": "forrdev.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bummmmble/Frost-Packager"
+  },
+  "bin": {
+    "frost-packager": "./bin/frost-packager"
+  },
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
   "scripts": {
     "build:cli": "node build.js --cli",
     "build:cjs": "node build.js --cjs",
