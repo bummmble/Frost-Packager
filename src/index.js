@@ -2,6 +2,7 @@ import meow from 'meow';
 import chalk from 'chalk';
 import { get as getRoot } from 'app-root-dir';
 
+import generateTargets from './helpers/targets';
 import { generateOutputMatrix, ammendOutputMatrix } fom './helpers/outputMatrix';
 
 const Root = getRoot();
@@ -71,7 +72,7 @@ const command = meow(`
     }
 });
 
-const { verbose, quiet, targetUnstable, outputFolder } = command.flags;
+const { verbose, quiet, targetUnstable, outputFolder, inputWeb, inputNode, inputBinary } = command.flags;
 if (verbose) {
     console.log(`Flags: ${command.flags}`);
 }
@@ -89,3 +90,12 @@ let outputMatrix = generateOutputMatrix(pkg, binaryOutput);
 if (outputFolder) {
     outputMatrix = ammendOutputMatrix(outputMatrix, pkg);
 }
+
+const rollupFormat = {
+    commonjs: 'cjs',
+    esmodule: 'es'
+};
+
+const formats = ['esmodule', 'commonjs'];
+const name = pkg.name;
+const targets = generateTargets(inputNode, inputWeb, inputBinary);
