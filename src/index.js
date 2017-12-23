@@ -2,6 +2,8 @@ import meow from 'meow';
 import chalk from 'chalk';
 import { get as getRoot } from 'app-root-dir';
 
+import { generateOutputMatrix, ammendOutputMatrix } fom './helpers/outputMatrix';
+
 const Root = getRoot();
 const pkg = require(resolve(Root, 'package.json'));
 
@@ -69,8 +71,21 @@ const command = meow(`
     }
 });
 
-const { verbose, quiet, targetUnstable } = command.flags;
+const { verbose, quiet, targetUnstable, outputFolder } = command.flags;
 if (verbose) {
     console.log(`Flags: ${command.flags}`);
 }
 
+const binaryConfig = pkg.bin;
+let binaryOutput = null;
+if (binaryConfig) {
+    for (const name in binaryConfig) {
+        binaryOutput = binaryConfig[name];
+        break;
+    }
+}
+
+let outputMatrix = generateOutputMatrix(pkg, binaryOutput);
+if (outputFolder) {
+    outputMatrix = ammendOutputMatrix(outputMatrix, pkg);
+}
