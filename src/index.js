@@ -12,6 +12,7 @@ import { resolve } from 'path';
 import { rollup } from 'rollup';
 import { get as getRoot } from 'app-root-dir';
 
+import getBanner from './helpers/banner';
 import generateTargets from './helpers/targets';
 import { generateOutputMatrix, ammendOutputMatrix } from './helpers/outputMatrix';
 import { findBest } from './helpers/utils';
@@ -112,6 +113,7 @@ const rollupFormat = {
 
 const formats = ['esmodule', 'commonjs'];
 const name = pkg.name;
+const banner = getBanner(pkg);
 const targets = generateTargets(inputNode, inputWeb, inputBinary);
 
 function generateBuilds() {
@@ -201,8 +203,10 @@ export function createBundle({
         ]
     })
     .then(({ write }) => write({
-        file: outputFile
+        banner,
+        file: outputFile,
         format: rollupFormat[format]
+        name,
         sourcemap: command.flags.sourcemap,
     }))
     .then(() => transpilerCb(null))
