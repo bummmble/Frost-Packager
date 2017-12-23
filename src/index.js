@@ -15,7 +15,7 @@ import { get as getRoot } from 'app-root-dir';
 import getBanner from './helpers/banner';
 import generateTargets from './helpers/targets';
 import { generateOutputMatrix, ammendOutputMatrix } from './helpers/outputMatrix';
-import { findBest } from './helpers/utils';
+import { findBest, camelize } from './helpers/utils';
 import { getTranspilers } from './helpers/transpilers';
 
 let cache;
@@ -112,7 +112,7 @@ const rollupFormat = {
 };
 
 const formats = ['esmodule', 'commonjs'];
-const name = pkg.name;
+const name = pkg.name || camelize(pkg.name);
 const banner = getBanner(pkg);
 const targets = generateTargets(inputNode, inputWeb, inputBinary);
 
