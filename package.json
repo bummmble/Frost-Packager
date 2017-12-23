@@ -9,5 +9,10 @@
     "eslint-plugin-react": "^7.5.1",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.0"
+  },
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "file-exists": "^5.0.0",
+    "meow": "^4.0.0"
   }
 }
