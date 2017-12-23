@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel';
+import buble from 'rollup-plugin-buble';
 import frost from 'babel-preset-frost';
 
 export function babelCreate({
@@ -56,9 +57,13 @@ export function babelCreate({
 
 export function createBabelConfig(opts) {
     return {
-        classic: createBabelConfig({ ...options, mode: 'classic' }),
-        es2015: createBabelConfig({ ...options, mode: 'es2015' }),
-        modern: createBabelConfig({ ...options, mode: 'modern' }),
-        binary: createBabelConfig({ ...options, mode: 'binary' })
+        classic: createBabelConfig({ ...opts, mode: 'classic' }),
+        es2015: createBabelConfig({ ...opts, mode: 'es2015' }),
+        modern: createBabelConfig({ ...opts, mode: 'modern' }),
+        binary: createBabelConfig({ ...opts, mode: 'binary' })
     };
+}
+
+export function createBubleConifg(opts) {
+    return buble();
 }
