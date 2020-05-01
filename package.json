@@ -19,7 +19,9 @@
     "build:cli": "node build.js --cli",
     "build:cjs": "node build.js --cjs",
     "build:es": "node build.js --es",
-    "build": "npm run build:cli && npm run build:cjs && npm run build:es"
+    "build": "npm run build:cli && npm run build:cjs && npm run build:es",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "builtin-modules": "^2.0.0",
@@ -48,6 +50,8 @@
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-yaml": "^1.1.0"
-  }
+    "rollup-plugin-yaml": "^1.1.0",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
